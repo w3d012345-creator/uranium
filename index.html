@@ -1,0 +1,1502 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>يورانيوم جبل صايد</title>
+<meta name="description" content="أرشيف تفاعلي من 21 حقيقة عن اليورانيوم، بمناسبة اكتشاف جبل صايد في المدينة المنورة.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=Chakra+Petch:wght@500;600;700&display=swap">
+<script>document.documentElement.lang="ar";document.documentElement.dir="rtl";document.body.classList.add("locked");</script>
+<style>
+/* Layout: a sphere of 21 fact plates orbits one centred headline; everything else
+   is quiet chrome pinned to the corners. Single dark look, by choice. */
+:root{
+  color-scheme:dark;
+  --bg:#05080f;
+  --plate:#0a101c;
+  --ink:#eef1f7;
+  --mid:rgba(224,231,244,.74);
+  --dim:rgba(232,238,250,.4);
+  --line:rgba(255,255,255,.13);
+  --glow:#d2e68e;
+  --cream:#e9dccb;
+  --on-cream:#15131b;
+
+  --display:"Reem Kufi","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --sans:"IBM Plex Sans Arabic",-apple-system,Tahoma,"Segoe UI",sans-serif;
+  --num:"Chakra Petch","IBM Plex Sans Arabic",sans-serif;
+
+  --pad:clamp(14px, 2.6vw, 34px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --hw:min(56vw, 640px);
+  --persp:1150px;
+  --cw:140px;
+  --safe-top:env(safe-area-inset-top, 0px);
+  --safe-right:env(safe-area-inset-right, 0px);
+  --safe-bottom:env(safe-area-inset-bottom, 0px);
+  --safe-left:env(safe-area-inset-left, 0px);
+  --chamfer:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scrollbar-gutter:stable}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;min-height:100vh;min-height:100dvh;overscroll-behavior-y:none;
+}
+body.locked{overflow:hidden;height:100vh;height:100dvh}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{-webkit-tap-highlight-color:transparent;color:inherit}
+button:focus-visible,a:focus-visible,.card:focus-visible,#grid figure:focus-visible{outline:1.5px solid var(--cream);outline-offset:3px}
+.numf{font-family:var(--num);font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+
+#scrolltrack{height:116vh;pointer-events:none}
+
+/* ---------- stage ---------- */
+#stage{
+  position:fixed;inset:0;z-index:10;perspective:var(--persp);perspective-origin:50% 50%;
+  overflow:hidden;touch-action:none;direction:ltr;
+  background:radial-gradient(circle at 50% 50%, rgba(210,230,142,.07) 0%, rgba(210,230,142,0) 38%), var(--bg);
+  transition:opacity .6s var(--ease), filter .6s var(--ease);
+}
+@media (pointer:coarse){#stage{touch-action:pan-y}}
+#world{position:absolute;top:50%;left:50%;width:0;height:0;transform-style:preserve-3d;will-change:transform}
+#orb{position:absolute;top:0;left:0;width:0;height:0;transform-style:preserve-3d;opacity:1;transform:none}
+#headline{
+  transition:opacity .45s var(--ease);
+  position:absolute;top:0;left:0;
+  width:var(--hw);margin-left:calc(var(--hw) / -2);
+  text-align:center;direction:rtl;
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(28px, 4.2vw, 62px);line-height:1.2;
+  color:#fff;text-shadow:0 2px 34px rgba(0,0,0,.7);
+  pointer-events:none;user-select:none;-webkit-user-select:none;
+}
+/* the title box is centred on the sphere origin: half its height above, half below,
+   so nothing overflows the box (Chrome drops 3D content that overflows upward) */
+#headline{top:-1.5em;height:3em;display:flex;align-items:center;justify-content:center}
+#headline .inner{display:block;width:100%}
+#headline .inner span{display:inline-block;opacity:0;transform:translateY(.42em);filter:blur(7px)}
+#headline .inner .g{color:var(--glow)}
+body.revealed #headline .inner span{
+  opacity:1;transform:none;filter:blur(0);
+  transition:opacity 1.05s var(--ease), transform 1.15s var(--ease), filter 1.05s var(--ease);
+  transition-delay:calc(.9s + var(--i) * .085s);
+}
+
+/* ---------- plates (shared by sphere, grid, lightbox) ---------- */
+.face{position:absolute;inset:0;overflow:hidden;background:var(--plate);container-type:inline-size;clip-path:var(--chamfer)}
+.face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.face .txt{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;
+  padding:7cqw 7.5cqw;direction:rtl;text-align:right;pointer-events:none;
+}
+.face .lab{display:flex;align-items:baseline;gap:2.4cqw;font-size:max(7px, 4.4cqw);color:var(--mid);font-weight:500;white-space:nowrap}
+.face .lab .numf{color:var(--dim);font-size:.9em}
+.face .stat{font-family:var(--num);font-weight:700;font-size:18cqw;line-height:.95;color:var(--glow);direction:ltr;text-align:right;letter-spacing:.01em;text-shadow:0 0 6cqw rgba(210,230,142,.35)}
+.face .stat.ar{font-family:var(--display);font-size:11.5cqw;line-height:1.15;direction:rtl}
+.face .unit{margin-top:2cqw;font-size:max(7px, 4.6cqw);color:var(--ink);font-weight:500}
+.tall .face .stat{font-size:30cqw}
+
+/* ---------- sphere cards ---------- */
+.card{position:absolute;top:0;left:0;transform-style:preserve-3d;cursor:pointer;outline:none}
+.card figure{position:absolute;inset:0;transition:transform .5s var(--ease);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.card .back{position:absolute;inset:0;background:var(--plate) center/cover no-repeat;clip-path:var(--chamfer);transform:rotateY(180deg);-webkit-backface-visibility:hidden;backface-visibility:hidden;opacity:.55}
+.card .back::after{content:"";position:absolute;inset:0;background:rgba(5,8,15,var(--d,0))}
+.card:hover figure{transform:scale(1.045)}
+.card .face{opacity:0}
+.card .face.in{opacity:1}
+body.revealed .card .face{transition:opacity .8s ease-out}
+.card figure::after{
+  content:"";position:absolute;inset:0;background:rgba(5,8,15,var(--d,0));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);clip-path:var(--chamfer);pointer-events:none;
+}
+
+.vig{
+  position:fixed;inset:0;z-index:12;pointer-events:none;
+  background:radial-gradient(ellipse 88% 92% at 50% 50%, transparent 48%, rgba(5,8,15,.3) 80%, rgba(5,8,15,.78) 100%);
+  transition:opacity .6s var(--ease);
+}
+body.gridview .vig, body.lit .vig{opacity:0}
+body.gridview #stage{opacity:0;filter:blur(14px);pointer-events:none}
+
+/* ---------- flat grid ---------- */
+#grid{
+  position:fixed;inset:0;z-index:20;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  padding:calc(var(--pad) * 3.4) var(--pad) calc(var(--pad) * 4);
+  background:var(--bg);opacity:0;pointer-events:none;transition:opacity .6s var(--ease);
+}
+body.gridview #grid{opacity:1;pointer-events:auto}
+#grid .rows{display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:clamp(10px, 1.4vw, 20px);max-width:1320px;margin:0 auto}
+#grid .chap{grid-column:1 / -1;display:flex;align-items:baseline;gap:12px;padding-top:18px;border-top:1px solid var(--line);font-family:var(--display);font-size:clamp(18px, 1.8vw, 24px);font-weight:600}
+#grid .chap:first-child{padding-top:0;border-top:0}
+#grid .chap .numf{font-size:12px;color:var(--dim)}
+#grid figure{position:relative;aspect-ratio:3/2;max-width:100%;cursor:pointer;outline:none}
+#grid figure .face img{opacity:.85;transition:transform .8s var(--ease), opacity .8s var(--ease)}
+#grid figure:hover .face img{transform:scale(1.05);opacity:1}
+#grid figcaption{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;clip-path:var(--chamfer);
+  font-family:var(--display);font-weight:500;font-size:15px;
+  padding:26px 14px 12px;background:linear-gradient(to bottom, transparent, rgba(5,8,15,.92));
+  opacity:0;transform:translateY(6px);transition:opacity .5s var(--ease), transform .5s var(--ease);
+}
+#grid figure:hover figcaption,#grid figure:focus-visible figcaption{opacity:1;transform:none}
+#grid figure .unit{transition:opacity .4s}
+#grid figure:hover .unit,#grid figure:focus-visible .unit{opacity:0}
+
+/* ---------- chrome ---------- */
+.chrome{opacity:0;transition:opacity 1.2s var(--ease) .15s, transform .6s var(--ease)}
+body.revealed .chrome{opacity:1}
+
+header{
+  position:fixed;top:0;left:0;width:100%;z-index:60;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:calc(var(--pad) * .8 + var(--safe-top)) calc(var(--pad) + var(--safe-right)) calc(var(--pad) * .35) calc(var(--pad) + var(--safe-left));
+  pointer-events:none;
+}
+header > *{pointer-events:auto}
+.wordmark{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);white-space:nowrap}
+.sym{
+  position:relative;display:grid;place-items:center;flex:none;
+  width:34px;height:34px;border:1px solid rgba(255,255,255,.22);
+  font-family:var(--num);font-weight:700;font-size:14px;color:var(--ink);direction:ltr;
+}
+.sym small{position:absolute;top:2px;left:4px;font-size:7.5px;color:var(--dim)}
+.wordmark .name{font-family:var(--display);font-weight:700;font-size:clamp(20px, 2.1vw, 28px);line-height:1.2}
+.menu-btn{display:flex;flex-direction:column;align-items:flex-end;gap:5px;min-width:44px;min-height:44px;padding:8px 0 4px;color:var(--ink)}
+.menu-label{font-size:clamp(12px, 1.25vw, 15px);font-weight:500;transition:opacity .35s var(--ease)}
+.bars{position:relative;display:block;width:clamp(42px, 4.4vw, 62px);height:clamp(16px, 2vw, 22px)}
+.bars i{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--ink);transition:transform .5s var(--ease), width .5s var(--ease)}
+.bars i:first-child{transform:translateY(-5px)}
+.bars i:last-child{right:auto;width:clamp(34px, 3.6vw, 50px);transform:translateY(5px)}
+.menu-btn:hover .bars i:last-child{transform:translate(8px, 5px)}
+body.menuopen header{z-index:90}
+body.menuopen .menu-label{opacity:0}
+body.menuopen .bars i{width:100%}
+body.menuopen .bars i:first-child{transform:translateY(0) rotate(45deg)}
+body.menuopen .bars i:last-child,body.menuopen .menu-btn:hover .bars i:last-child{transform:translateY(0) rotate(-45deg)}
+
+.bio{
+  position:fixed;right:calc(var(--pad) + var(--safe-right));bottom:calc(var(--pad) + var(--safe-bottom));
+  z-index:55;max-width:min(340px, 46vw);
+}
+.bio .who{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.bio .sym{width:52px;height:52px;font-size:20px;background:rgba(210,230,142,.06);border-color:rgba(210,230,142,.4);color:var(--glow)}
+.bio .sym small{font-size:9px;top:4px;left:6px}
+.bio b{display:block;font-family:var(--display);font-weight:600;font-size:19px}
+.bio .who div span{display:block;font-size:12px;color:var(--dim);margin-top:2px}
+.bio p{font-size:12.5px;line-height:1.85;color:var(--mid)}
+.bio p .numf{color:var(--glow);font-weight:600}
+body.deep .bio.chrome, body.gridview .bio.chrome, body.lit .bio.chrome{opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .5s var(--ease), transform .5s var(--ease)}
+
+.colophon{position:fixed;left:calc(var(--pad) + var(--safe-left));bottom:calc(var(--pad) + var(--safe-bottom));z-index:55;font-size:12.5px;color:var(--mid)}
+body.gridview .colophon.chrome, body.lit .colophon.chrome{opacity:0;transition:opacity .5s var(--ease)}
+
+.gridbtn{
+  position:fixed;right:calc(var(--pad) + var(--safe-right));bottom:calc(var(--pad) + var(--safe-bottom));
+  z-index:56;width:44px;height:44px;padding:5px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4px;
+  opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .6s var(--ease), transform .6s var(--ease);
+}
+.gridbtn b{background:var(--cream);border-radius:2px;transition:transform .45s var(--ease), background .3s}
+.gridbtn:hover b{background:#fff;transform:scale(.86)}
+body.deep .gridbtn, body.gridview .gridbtn{opacity:1;transform:none;pointer-events:auto}
+body.lit .gridbtn{opacity:0;pointer-events:none}
+body.gridview .gridbtn b:nth-child(1){transform:translate(-3px, 3px)}
+body.gridview .gridbtn b:nth-child(4){transform:translate(3px, -3px)}
+
+.cue{
+  position:fixed;left:50%;bottom:calc(var(--pad) + var(--safe-bottom) + 4px);transform:translateX(-50%);z-index:54;
+  display:flex;align-items:center;gap:10px;font-size:11.5px;font-weight:500;color:var(--dim);white-space:nowrap;pointer-events:none;
+}
+.cue s{position:relative;display:block;width:44px;height:1px;background:rgba(255,255,255,.2);overflow:hidden}
+.cue s::after{content:"";position:absolute;inset:0;background:var(--glow);transform:translateX(100%);animation:sweep 2.6s var(--ease) infinite}
+@keyframes sweep{0%{transform:translateX(100%)}55%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+body.deep .cue.chrome, body.gridview .cue.chrome, body.lit .cue.chrome{opacity:0;transition:opacity .5s var(--ease)}
+
+/* ---------- menu ---------- */
+#menu{
+  position:fixed;inset:0;z-index:80;background:#04060b;display:grid;place-items:center;
+  clip-path:inset(0 0 100% 0);pointer-events:none;transition:clip-path .85s var(--ease);
+  padding:calc(90px + var(--safe-top)) var(--pad) calc(150px + var(--safe-bottom));overflow-y:auto;
+}
+body.menuopen #menu{clip-path:inset(0);pointer-events:auto}
+#menu nav{display:flex;flex-direction:column;gap:clamp(2px, .6vw, 6px);text-align:center}
+#menu nav a{
+  display:inline-flex;align-items:baseline;justify-content:center;gap:.4em;
+  font-family:var(--display);font-weight:600;font-size:clamp(24px, 4.4vw, 50px);line-height:1.3;
+  text-decoration:none;opacity:.5;transition:opacity .45s var(--ease), color .45s var(--ease);
+}
+#menu nav a .numf{font-size:.34em;color:var(--dim)}
+#menu nav a.all{font-size:clamp(30px, 6vw, 70px);color:var(--glow);opacity:.8;margin-bottom:.15em}
+#menu nav a:hover,#menu nav a:focus-visible{opacity:1}
+#menu .addr{
+  position:absolute;left:calc(var(--pad) + var(--safe-left));right:calc(var(--pad) + var(--safe-right));bottom:calc(var(--pad) + var(--safe-bottom));
+  display:flex;flex-wrap:wrap;gap:6px 22px;font-size:12.5px;color:var(--dim);line-height:1.7;
+}
+#menu .addr h2{flex-basis:100%;font-size:11px;font-weight:600;color:var(--dim)}
+#menu .addr a{text-decoration:none;color:var(--mid);border-bottom:1px solid var(--line);transition:color .3s}
+#menu .addr a:hover{color:var(--glow)}
+
+/* ---------- lightbox ---------- */
+#lit{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:clamp(56px, 8vh, 84px) var(--pad);opacity:0;pointer-events:none;transition:opacity .42s var(--ease)}
+body.lit #lit{opacity:1;pointer-events:auto}
+#lit .scrim{position:absolute;inset:0}
+.plate{position:relative;z-index:1;width:min(72vw, 860px, calc((100vh - 250px) * 1.5));transform-origin:50% 0;transition:transform .62s var(--ease), opacity .42s var(--ease)}
+.shot{position:relative;width:100%;aspect-ratio:3/2;max-width:100%;filter:drop-shadow(0 30px 60px rgba(0,0,0,.75))}
+.shot .face .stat{font-size:15cqw}
+.shot .face .stat.ar{font-size:10cqw}
+.shot .face .lab{font-size:max(11px, 2.4cqw)}
+.shot .face .unit{font-size:max(12px, 2.8cqw)}
+.shot .face .txt{padding:5cqw 5.5cqw}
+.shot .close{
+  position:absolute;top:12px;left:14px;z-index:2;font-size:12.5px;font-weight:500;min-width:44px;min-height:44px;padding:10px 16px;
+  border:1px solid rgba(233,220,203,.7);background:rgba(5,8,15,.4);color:var(--ink);
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:background .3s;
+}
+.shot .close:hover{background:rgba(5,8,15,.7)}
+.meta{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:clamp(22px, 3.2vw, 48px);padding-top:18px}
+#litTitle{font-family:var(--display);font-weight:600;font-size:clamp(22px, 2.15vw, 32px);line-height:1.3;margin-bottom:6px;text-wrap:balance}
+.where{font-size:13px;color:var(--dim)}
+.note{font-size:14.5px;line-height:1.85;color:var(--mid);max-width:62ch}
+.pager{display:flex;gap:8px;margin-top:14px}
+.pager button{min-height:40px;padding:8px 14px;font-size:12.5px;border:1px solid var(--line);color:var(--mid);transition:color .3s, border-color .3s}
+.pager button:hover{color:var(--ink);border-color:rgba(255,255,255,.35)}
+
+/* ---------- credits ---------- */
+.credits{display:flex;flex-direction:column;gap:3px;line-height:1.5}
+.credits b{font-weight:600;font-size:11px;color:var(--glow);margin-bottom:2px}
+.credits span{color:var(--mid)}
+.credits.inline{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:4px 16px;font-size:12px}
+.bio-credits{display:none !important}
+.bio .credits b{display:inline;font-family:var(--sans);font-size:11px;font-weight:600}
+.credits.inline b{margin:0}
+#splash .credits{opacity:0;animation:riseIn .9s ease .95s forwards;max-width:calc(100vw - 32px)}
+.grid-credits{max-width:1320px;margin:clamp(28px, 4vw, 48px) auto 0;padding-top:18px;border-top:1px solid var(--line)}
+.menu-credits{flex-basis:100%;justify-content:flex-start;margin-top:8px;padding-top:10px;border-top:1px solid var(--line)}
+
+/* ---------- 3D ore viewer ---------- */
+#ore{position:absolute;inset:0;width:100%;height:100%;display:block}
+#specimen{position:fixed;inset:0;z-index:95;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
+body.specimen #specimen{opacity:1;pointer-events:auto}
+.sp-stage{position:absolute;inset:0;touch-action:none;cursor:grab}
+.sp-stage.drag{cursor:grabbing}
+.sp-info{
+  position:absolute;right:calc(var(--pad) + var(--safe-right));bottom:calc(var(--pad) + var(--safe-bottom));
+  max-width:min(380px, calc(100vw - var(--pad) * 2));pointer-events:none;
+}
+.sp-info h2{font-family:var(--display);font-weight:600;font-size:clamp(20px, 2vw, 26px);margin-bottom:6px}
+.sp-info p{font-size:13px;line-height:1.8;color:var(--mid)}
+.sp-info span{display:block;margin-top:8px;font-size:11.5px;font-weight:500;color:var(--dim)}
+.sp-close{
+  position:absolute;top:calc(var(--pad) + var(--safe-top));left:calc(var(--pad) + var(--safe-left));
+  font-size:12.5px;font-weight:500;min-width:44px;min-height:44px;padding:10px 18px;
+  border:1px solid rgba(233,220,203,.6);background:rgba(5,8,15,.4);color:var(--ink);
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:background .3s;
+}
+.sp-close:hover{background:rgba(5,8,15,.75)}
+button.sym{cursor:pointer;transition:border-color .3s, background .3s}
+button.sym:hover{border-color:var(--glow);background:rgba(210,230,142,.12)}
+.spec-link{margin-top:6px;padding:10px 0;font-size:12px;font-weight:500;color:var(--glow);text-decoration:underline;text-decoration-color:rgba(210,230,142,.4);text-underline-offset:4px}
+#menu nav a.spec{font-size:clamp(18px, 2.4vw, 26px);color:var(--cream);opacity:.75;margin-bottom:.5em}
+[data-nospec] [data-spec]{display:none !important}
+
+/* ---------- intro (live specimen instead of a film) ---------- */
+#intro{position:fixed;inset:0;z-index:200;background:var(--bg);overflow:hidden}
+#film{position:absolute;inset:0;width:100%;height:100%;display:block}
+#intro .caption{
+  position:absolute;left:0;right:0;bottom:calc(var(--pad) * 2.2 + var(--safe-bottom));text-align:center;
+  font-size:12px;font-weight:500;color:var(--dim);opacity:0;animation:riseIn 1s ease .4s forwards;
+}
+#intro .caption .numf{color:var(--glow)}
+#intro .veil{position:absolute;inset:0;background:var(--bg);opacity:0;transition:opacity 1.15s ease;pointer-events:none}
+#intro.closing .veil{opacity:1}
+#intro.gone{opacity:0;pointer-events:none;transition:opacity .5s linear}
+.skip{
+  position:absolute;z-index:2;left:calc(var(--pad) + var(--safe-left));bottom:calc(var(--pad) + var(--safe-bottom));
+  font-size:12px;font-weight:500;color:var(--mid);min-height:44px;padding:10px 20px;
+  border:1px solid rgba(255,255,255,.22);border-radius:999px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  transition:color .3s, border-color .3s, opacity .4s;
+}
+.skip:hover{color:#fff;border-color:rgba(255,255,255,.6)}
+#intro.closing .skip{opacity:0;pointer-events:none}
+
+/* ---------- splash ---------- */
+#splash{position:fixed;inset:0;z-index:250;background:var(--bg);display:grid;place-items:center;align-content:center;gap:26px;transition:opacity .6s ease}
+#splash.out{opacity:0;pointer-events:none}
+#splash .mark{display:flex;align-items:center;gap:14px;opacity:0;animation:riseIn 1.25s ease .15s forwards}
+#splash .mark .name{font-family:var(--display);font-weight:700;font-size:clamp(30px, 4.6vw, 56px)}
+#splash .mark .sym{width:48px;height:48px;font-size:19px}
+#splash .bar{width:clamp(120px, 17vw, 210px);height:1px;background:rgba(255,255,255,.14);overflow:hidden}
+#splash .bar s{display:block;width:100%;height:100%;background:var(--glow);transform:scaleX(0);transform-origin:right;transition:transform .55s ease}
+#splash .tag{font-size:11.5px;font-weight:500;color:var(--dim);opacity:0;animation:riseIn .9s ease .7s forwards}
+@keyframes riseIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+
+/* ---------- cursor ---------- */
+#dot{
+  position:fixed;top:0;left:0;z-index:300;pointer-events:none;width:19px;height:19px;margin:-9.5px 0 0 -9.5px;border-radius:50%;
+  background:rgba(214,212,209,.9);mix-blend-mode:difference;border:1px solid transparent;opacity:0;
+  transition:width .35s var(--ease), height .35s var(--ease), margin .35s var(--ease), background .35s var(--ease), border-color .35s var(--ease), opacity .3s;
+}
+#dot.on{opacity:1}
+#dot.wide{width:52px;height:52px;margin:-26px 0 0 -26px;background:rgba(210,230,142,.14);border-color:rgba(210,230,142,.75)}
+@media (hover:none), (pointer:coarse){#dot{display:none}}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .bio{max-width:min(420px, calc(100vw - var(--pad) * 2 - var(--safe-left) - var(--safe-right)))}
+  .bio p{font-size:12px}
+  .colophon{font-size:11px}
+  .meta{grid-template-columns:1fr;gap:10px;padding-top:14px}
+  .plate{width:min(92vw, calc((100dvh - 260px) * 1.5))}
+  #grid{padding-top:calc(var(--pad) * 2.8 + var(--safe-top) + 30px)}
+}
+@media (max-width:768px){
+  .colophon{display:none}
+  .bio-credits{display:flex !important;justify-content:flex-start;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:11.5px}
+  .bio{max-width:calc(100vw - var(--pad) * 2 - var(--safe-left) - var(--safe-right))}
+  #headline{font-size:clamp(24px, 7vw, 38px)}
+  #menu .addr{font-size:11.5px}
+}
+@media (max-width:640px){
+  .sp-info p{font-size:12px}
+  :root{--hw:min(84vw, 360px);--pad:clamp(12px, 4vw, 18px)}
+  .bio .sym{width:42px;height:42px;font-size:17px}
+  .bio b{font-size:17px}
+  .bio p{font-size:11.5px;line-height:1.75}
+  .cue{display:none}
+  #lit{display:block;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(52px + var(--safe-top)) calc(var(--pad) + var(--safe-right)) calc(var(--pad) + var(--safe-bottom)) calc(var(--pad) + var(--safe-left))}
+  .plate{width:100%;max-width:560px;margin:0 auto}
+  #litTitle{font-size:clamp(20px, 5.6vw, 26px)}
+  .note{font-size:13.5px;line-height:1.8}
+  .shot .close{top:8px;left:8px}
+  #grid .rows{gap:8px}
+  #grid figcaption{display:none}
+  #grid figure:hover .unit{opacity:1}
+  #grid{padding:calc(var(--pad) * 2.8 + var(--safe-top) + 30px) calc(var(--pad) + var(--safe-right)) calc(var(--pad) * 4 + var(--safe-bottom)) calc(var(--pad) + var(--safe-left))}
+  .wordmark .sym{width:30px;height:30px;font-size:12px}
+}
+@media (max-width:560px){
+  #grid .rows{grid-template-columns:1fr}
+  #lit{background:rgba(5,8,15,.88)}
+}
+@media (max-width:380px){
+  :root{--hw:min(88vw, 320px)}
+  .bio .who{gap:10px;margin-bottom:0}
+  .bio p{display:none}
+  #menu nav{gap:0}
+  #menu nav a{font-size:clamp(20px, 7vw, 30px)}
+}
+@media (max-height:520px) and (orientation:landscape){
+  .bio, .colophon, .cue{display:none}
+  #headline{font-size:clamp(18px, 5.4vh, 30px)}
+  #lit{padding-top:calc(36px + var(--safe-top))}
+  .meta{padding-top:10px}
+  .plate{width:min(58vw, calc((100dvh - 80px) * 1.5))}
+  header{padding-top:calc(8px + var(--safe-top))}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.14s !important}
+}
+</style>
+
+<div id="scrolltrack" aria-hidden="true"></div>
+
+<div id="stage" aria-label="أرشيف ثلاثي الأبعاد من 21 حقيقة، اسحبه لتدويره">
+  <div id="world">
+    <div id="orb"></div>
+    <h1 id="headline"><span class="inner"><span style="--i:0">كنزٌ</span> <span style="--i:1">تحت</span><br><span style="--i:2" class="g">جبل</span> <span style="--i:3" class="g">صايد</span></span></h1>
+  </div>
+</div>
+
+<div class="vig" aria-hidden="true"></div>
+
+<div id="grid" aria-label="الأرشيف الكامل"><div class="rows" id="rows"></div>
+  <footer class="credits inline grid-credits"><b>إعداد</b><span>وعد محمد القحطاني</span><span>أثير أحمد الشهري</span><span>نادين محمد القحطاني</span></footer></div>
+
+<header class="chrome">
+  <a class="wordmark" href="#" aria-label="يورانيوم: العودة إلى البداية">
+    <span class="sym" aria-hidden="true"><small>92</small>U</span>
+    <span class="name">يورانيوم</span>
+  </a>
+  <button id="menuBtn" class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="فتح القائمة">
+    <span class="menu-label">القائمة</span>
+    <span class="bars" aria-hidden="true"><i></i><i></i></span>
+  </button>
+</header>
+
+<aside class="bio chrome">
+  <div class="who">
+    <button class="sym" type="button" data-spec aria-label="عرض عيّنة الخام ثلاثية الأبعاد"><small>92</small>U</button>
+    <div><b>جبل صايد</b><span>المدينة المنورة · 14 سبتمبر 2026</span></div>
+  </div>
+  <p>نحو <span class="numf">110</span> ملايين طن من الخام، غنيّ بالمعادن الأرضية النادرة ومصحوب بتركيزات واعدة من اليورانيوم. اسحب الكرة لتصفّح <span class="numf">21</span> حقيقة عن العنصر واستخداماته.</p>
+  <button class="spec-link" type="button" data-spec>شاهد عيّنة الخام ثلاثية الأبعاد</button>
+  <div class="credits inline bio-credits"><b>إعداد</b><span>وعد محمد القحطاني</span><span>أثير أحمد الشهري</span><span>نادين محمد القحطاني</span></div>
+</aside>
+
+<div class="colophon chrome credits"><b>إعداد</b><span>وعد محمد القحطاني</span><span>أثير أحمد الشهري</span><span>نادين محمد القحطاني</span></div>
+
+<button id="gridBtn" class="gridbtn" type="button" aria-label="تبديل العرض الشبكي"><b></b><b></b><b></b><b></b></button>
+
+<div class="cue chrome" aria-hidden="true"><s></s>اسحب للتدوير · مرّر للاقتراب</div>
+
+<div id="menu" aria-hidden="true">
+  <nav id="menuNav"></nav>
+  <div class="addr">
+    <h2>المعلومات مأخوذة من</h2>
+    <a href="https://arabic.cnn.com/middle-east/article/2026/09/14/saudi-ksa-uranium" target="_blank" rel="noopener">إعلان اكتشاف جبل صايد · CNN عربية</a>
+    <a href="https://www.i24news.tv/ar/%D8%A3%D8%AE%D8%A8%D8%A7%D8%B1/middle-east/artc-dc8d5d76" target="_blank" rel="noopener">تركيز الخام لم يُعلن بعد · i24NEWS</a>
+    <a href="https://world-nuclear.org/information-library/current-and-future-generation/nuclear-power-in-the-world-today" target="_blank" rel="noopener">حصة الطاقة النووية عالمياً · WNA</a>
+    <a href="https://world-nuclear.org/information-library/nuclear-fuel-cycle/introduction/what-is-uranium-how-does-it-work" target="_blank" rel="noopener">خصائص اليورانيوم ونظائره · WNA</a>
+    <div class="credits inline menu-credits"><b>إعداد</b><span>وعد محمد القحطاني</span><span>أثير أحمد الشهري</span><span>نادين محمد القحطاني</span></div>
+  </div>
+</div>
+
+<div id="lit" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="plate" id="plate">
+    <div class="shot" id="shot">
+      <button class="close" type="button" data-close>إغلاق</button>
+    </div>
+    <div class="meta">
+      <div>
+        <h2 id="litTitle"></h2>
+        <div class="where" id="litWhere"></div>
+      </div>
+      <div>
+        <p class="note" id="litNote"></p>
+        <div class="pager">
+          <button type="button" id="litPrev">→ السابق</button>
+          <button type="button" id="litNext">التالي ←</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="specimen" aria-hidden="true" role="dialog" aria-label="عيّنة الخام ثلاثية الأبعاد">
+  <div class="sp-stage" id="spStage"></div>
+  <div class="sp-info">
+    <h2>عيّنة الخام</h2>
+    <p>نموذج تمثيلي مولّد بالحاسوب لخام اليورانيوم: قشرة صفراء ذهبية فوق صخر داكن تتخلله بقع صدئة. هو توضيح للشكل وليس صورة لعيّنة من جبل صايد.</p>
+    <span>اسحب للتدوير · مرّر أو اقرص للتقريب</span>
+  </div>
+  <button class="sp-close" type="button" id="spClose">إغلاق</button>
+</div>
+
+<div id="intro">
+  <canvas id="film" aria-hidden="true"></canvas>
+  <div class="caption">عيّنة تمثيلية لخام اليورانيوم · <span class="numf">U-92</span></div>
+  <div class="veil"></div>
+  <button class="skip" id="skip" type="button">تخطٍّ</button>
+</div>
+
+<div id="splash">
+  <div class="mark"><span class="sym" aria-hidden="true"><small>92</small>U</span><span class="name">يورانيوم</span></div>
+  <div class="bar"><s id="bar"></s></div>
+  <div class="tag">جبل صايد · المدينة المنورة</div>
+  <div class="credits inline"><b>إعداد</b><span>وعد محمد القحطاني</span><span>أثير أحمد الشهري</span><span>نادين محمد القحطاني</span></div>
+</div>
+
+<div id="dot" aria-hidden="true"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ------------------------------------------------------------
+   ORE — a procedural cluster of uranium-ore rocks in WebGL (three.js r128)
+------------------------------------------------------------ */
+function createOre(canvas, opts){
+  "use strict";
+  opts = opts || {};
+  var T = window.THREE;
+  if (!T) return null;
+  var renderer;
+  try { renderer = new T.WebGLRenderer({ canvas:canvas, antialias:true, alpha:false, powerPreference:"high-performance" }); }
+  catch (e){ return null; }
+  var LOW = opts.low;
+  renderer.setPixelRatio(Math.min(LOW ? 1.5 : 2, window.devicePixelRatio || 1));
+  renderer.outputEncoding = T.sRGBEncoding;
+  renderer.toneMapping = T.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = T.PCFSoftShadowMap;
+  renderer.setClearColor(0x05080f, 1);
+
+  /* ---------- noise ---------- */
+  var perm = new Uint8Array(512), G3 = [[1,1,0],[-1,1,0],[1,-1,0],[-1,-1,0],[1,0,1],[-1,0,1],[1,0,-1],[-1,0,-1],[0,1,1],[0,-1,1],[0,1,-1],[0,-1,-1]];
+  (function(){ var p = [], s = 1337; for (var i = 0; i < 256; i++) p[i] = i;
+    for (i = 255; i > 0; i--){ s = (s * 16807) % 2147483647; var j = s % (i + 1), t = p[i]; p[i] = p[j]; p[j] = t; }
+    for (i = 0; i < 512; i++) perm[i] = p[i & 255]; })();
+  function sn(x, y, z){
+    var F = 1/3, Gg = 1/6, s = (x + y + z) * F, i = Math.floor(x + s), j = Math.floor(y + s), k = Math.floor(z + s);
+    var t = (i + j + k) * Gg, x0 = x - i + t, y0 = y - j + t, z0 = z - k + t, i1, j1, k1, i2, j2, k2;
+    if (x0 >= y0){ if (y0 >= z0){ i1=1;j1=0;k1=0;i2=1;j2=1;k2=0; } else if (x0 >= z0){ i1=1;j1=0;k1=0;i2=1;j2=0;k2=1; } else { i1=0;j1=0;k1=1;i2=1;j2=0;k2=1; } }
+    else { if (y0 < z0){ i1=0;j1=0;k1=1;i2=0;j2=1;k2=1; } else if (x0 < z0){ i1=0;j1=1;k1=0;i2=0;j2=1;k2=1; } else { i1=0;j1=1;k1=0;i2=1;j2=1;k2=0; } }
+    var x1 = x0 - i1 + Gg, y1 = y0 - j1 + Gg, z1 = z0 - k1 + Gg, x2 = x0 - i2 + 2*Gg, y2 = y0 - j2 + 2*Gg, z2 = z0 - k2 + 2*Gg, x3 = x0 - 1 + .5, y3 = y0 - 1 + .5, z3 = z0 - 1 + .5;
+    var ii = i & 255, jj = j & 255, kk = k & 255, n = 0;
+    function c(tt, gi, a, b, d){ if (tt < 0) return 0; tt *= tt; var g = G3[gi % 12]; return tt * tt * (g[0]*a + g[1]*b + g[2]*d); }
+    n += c(.6 - x0*x0 - y0*y0 - z0*z0, perm[ii + perm[jj + perm[kk]]], x0, y0, z0);
+    n += c(.6 - x1*x1 - y1*y1 - z1*z1, perm[ii + i1 + perm[jj + j1 + perm[kk + k1]]], x1, y1, z1);
+    n += c(.6 - x2*x2 - y2*y2 - z2*z2, perm[ii + i2 + perm[jj + j2 + perm[kk + k2]]], x2, y2, z2);
+    n += c(.6 - x3*x3 - y3*y3 - z3*z3, perm[ii + 1 + perm[jj + 1 + perm[kk + 1]]], x3, y3, z3);
+    return 32 * n;
+  }
+  function fbm(x, y, z, o){ var a = .5, f = 1, s = 0; for (var i = 0; i < o; i++){ s += a * sn(x*f, y*f, z*f); f *= 2.03; a *= .5; } return s; }
+  function ridge(x, y, z, o){ var a = .5, f = 1, s = 0; for (var i = 0; i < o; i++){ s += a * (1 - Math.abs(sn(x*f, y*f, z*f))); f *= 2.1; a *= .5; } return s; }
+  function sm(a, b, x){ x = Math.min(1, Math.max(0, (x - a) / (b - a))); return x * x * (3 - 2 * x); }
+  function rng(seed){ var s = seed | 0; return function(){ s = (s + 0x6d2b79f5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+  /* ---------- indexed icosphere ---------- */
+  function icosphere(levels){
+    var g = (1 + Math.sqrt(5)) / 2, V = [], F;
+    function nrm(a){ var l = Math.hypot(a[0], a[1], a[2]); return [a[0]/l, a[1]/l, a[2]/l]; }
+    [[-1,g,0],[1,g,0],[-1,-g,0],[1,-g,0],[0,-1,g],[0,1,g],[0,-1,-g],[0,1,-g],[g,0,-1],[g,0,1],[-g,0,-1],[-g,0,1]].forEach(function(v){ V.push(nrm(v)); });
+    F = [[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
+    for (var l = 0; l < levels; l++){
+      var cache = new Map(), NF = [];
+      var mid = function(a, b){ var k = a < b ? a * 1e6 + b : b * 1e6 + a, h = cache.get(k); if (h !== undefined) return h;
+        V.push(nrm([(V[a][0]+V[b][0])/2, (V[a][1]+V[b][1])/2, (V[a][2]+V[b][2])/2])); cache.set(k, V.length - 1); return V.length - 1; };
+      for (var f = 0; f < F.length; f++){ var t = F[f], ab = mid(t[0], t[1]), bc = mid(t[1], t[2]), ca = mid(t[2], t[0]);
+        NF.push([t[0],ab,ca],[t[1],bc,ab],[t[2],ca,bc],[ab,bc,ca]); }
+      F = NF;
+    }
+    return { V:V, F:F };
+  }
+  var SPHERE = icosphere(LOW ? 5 : 6);
+
+  function lin(c){ return c <= .04045 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4); }
+  function makeRock(seed, scale){
+    var r = rng(seed), o = [r()*50, r()*50, r()*50], o2 = [r()*50, r()*50, r()*50];
+    var sx = scale[0], sy = scale[1], sz = scale[2];
+    var cuts = [], nc = 10 + ((r() * 5) | 0);
+    for (var i = 0; i < nc; i++){
+      var n = [r()*2-1, (r()*2-1) * .8, r()*2-1], l = Math.hypot(n[0], n[1], n[2]);
+      cuts.push({ n:[n[0]/l, n[1]/l, n[2]/l], d:.42 + r() * .3 });
+    }
+    var V = SPHERE.V, cnt = V.length;
+    var pos = new Float32Array(cnt * 3), col = new Float32Array(cnt * 3), crust = new Float32Array(cnt);
+    for (i = 0; i < cnt; i++){
+      var v = V[i], x = v[0], y = v[1], z = v[2];
+      var big = 1 + .14 * fbm(x*1.1 + o[0], y*1.1 + o[1], z*1.1 + o[2], 2);
+      var px = x * big * sx, py = y * big * sy, pz = z * big * sz, cutDepth = 0;
+      for (var c = 0; c < cuts.length; c++){
+        var cn = cuts[c].n, dd = px*cn[0] + py*cn[1] + pz*cn[2] - cuts[c].d;
+        if (dd > 0){ var kk = dd * .985 - .01 * sn(px*3 + c, py*3, pz*3); px -= cn[0] * kk; py -= cn[1] * kk; pz -= cn[2] * kk; cutDepth = Math.max(cutDepth, dd); }
+      }
+      // fine crusty relief pushed along the original radial direction
+      var q = 9, rough = .016 * (ridge(x*q + o2[0], y*q + o2[1], z*q + o2[2], 3) - .55) + .009 * fbm(x*34 + o[1], y*34 + o[2], z*34 + o[0], 2);
+      var nCrust = fbm(x*1.5 + o2[1], y*1.5 + o2[2], z*1.5 + o2[0], 4) + .12 * fbm(x*9 + o[0], y*9 + o[1], z*9 + o[2], 2);
+      var cr = sm(-.16, .1, nCrust + .3 * y - (cutDepth > .12 ? .1 : 0));
+      rough += cr * .012;
+      px += x * rough; py += y * rough; pz += z * rough;
+      pos[i*3] = px; pos[i*3+1] = py; pos[i*3+2] = pz;
+
+      var n1 = .5 + .5 * fbm(x*3.1 + o[2], y*3.1 + o[0], z*3.1 + o[1], 3);
+      var n2 = .5 + .5 * fbm(x*7 + o2[2], y*7 + o2[0], z*7 + o2[1], 3);
+      var n3 = .5 + .5 * (.6 * sn(x*30 + o[0], y*30 + o[1], z*30 + o[2]) + .4 * sn(x*6 + o[2], y*6 + o[0], z*6 + o[1]));
+      // dark interior: basalt grey-black with rust and violet stains
+      var ir = .05 + .07 * n2, ig = .045 + .055 * n2, ib = .04 + .05 * n2;
+      var rust = sm(.5, .78, n1) * .8, vio = sm(.6, .85, 1 - n1) * .6;
+      ir += (.42 - ir) * rust; ig += (.17 - ig) * rust; ib += (.07 - ib) * rust;
+      ir += (.36 - ir) * vio * (1 - rust); ig += (.25 - ig) * vio * (1 - rust); ib += (.33 - ib) * vio * (1 - rust);
+      // crust: yellow-green through gold, patchy brightness
+      var gold = sm(.35, .75, n1);
+      var cr_ = .66 + (.86 - .66) * gold, cg_ = .6 + (.6 - .6) * gold, cb_ = .1 + (.16 - .1) * gold;
+      cg_ = .6 - .06 * gold;
+      var br = .5 + .62 * n3;
+      cr_ *= br; cg_ *= br; cb_ *= br;
+      // olive-black mottling inside the crust
+      var dk = sm(.52, .26, .5 + .5 * fbm(x*11 + o2[0], y*11 + o2[1], z*11 + o2[2], 3)) * .8;
+      cr_ += (.12 - cr_) * dk; cg_ += (.12 - cg_) * dk; cb_ += (.04 - cb_) * dk;
+      var cmix = cr * (.8 + .2 * n2) * (1 - .45 * dk);
+      col[i*3]   = lin(Math.min(1, ir + (cr_ - ir) * cmix));
+      col[i*3+1] = lin(Math.min(1, ig + (cg_ - ig) * cmix));
+      col[i*3+2] = lin(Math.min(1, ib + (cb_ - ib) * cmix));
+      crust[i] = cmix;
+    }
+    var idx = new (cnt > 65535 ? Uint32Array : Uint16Array)(SPHERE.F.length * 3);
+    for (i = 0; i < SPHERE.F.length; i++){ idx[i*3] = SPHERE.F[i][0]; idx[i*3+1] = SPHERE.F[i][1]; idx[i*3+2] = SPHERE.F[i][2]; }
+    var geo = new T.BufferGeometry();
+    geo.setAttribute("position", new T.BufferAttribute(pos, 3));
+    geo.setAttribute("color", new T.BufferAttribute(col, 3));
+    geo.setAttribute("aCrust", new T.BufferAttribute(crust, 1));
+    geo.setIndex(new T.BufferAttribute(idx, 1));
+    geo.computeVertexNormals();
+    geo.computeBoundingBox();
+    return geo;
+  }
+
+  var mat = new T.MeshStandardMaterial({ vertexColors:true, roughness:.86, metalness:.05, envMapIntensity:1 });
+  mat.onBeforeCompile = function(sh){
+    sh.vertexShader = "attribute float aCrust;\nvarying float vCrust;\nvarying vec3 vObj;\n" +
+      sh.vertexShader.replace("#include <begin_vertex>", "#include <begin_vertex>\n vCrust = aCrust; vObj = position;");
+    sh.fragmentShader = "varying float vCrust;\nvarying vec3 vObj;\nfloat hh(vec3 p){ return fract(sin(dot(p, vec3(12.9898,78.233,37.719))) * 43758.5453); }\n" +
+      sh.fragmentShader
+        .replace("#include <roughnessmap_fragment>", "#include <roughnessmap_fragment>\n float gl = hh(floor(vObj * 260.0));\n roughnessFactor = mix(roughnessFactor, 0.24 + 0.34 * gl, vCrust);")
+        .replace("#include <metalnessmap_fragment>", "#include <metalnessmap_fragment>\n metalnessFactor = mix(metalnessFactor, 0.78, vCrust);")
+        .replace("#include <normal_fragment_maps>", "#include <normal_fragment_maps>\n vec3 cell = floor(vObj * 260.0);\n vec3 jit = vec3(hh(cell), hh(cell + 17.0), hh(cell + 41.0)) - 0.5;\n normal = normalize(normal + jit * (0.55 * vCrust + 0.25));");
+  };
+
+  /* ---------- scene ---------- */
+  var scene = new T.Scene();
+  var camera = new T.PerspectiveCamera(30, 1, .1, 100);
+  var pm = new T.PMREMGenerator(renderer);
+  var env = new T.Scene();
+  env.add(new T.Mesh(new T.SphereGeometry(20, 16, 8), new T.MeshBasicMaterial({ color:0x020304, side:T.BackSide })));
+  function box(c, x, y, z, w, h){ var m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color:c, side:T.DoubleSide })); m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m); }
+  box(0xfff1d6, -6, 7, 5, 7, 4);  // warm key softbox
+  box(0x9fb8ff, 7, 3, -6, 5, 6);  // cool rim
+  box(0x404040, 0, -6, 6, 10, 2);
+  scene.environment = pm.fromScene(env, .04).texture;
+
+  var key = new T.DirectionalLight(0xfff0d8, 3.6);
+  key.position.set(-3.5, 5, 3.2);
+  key.castShadow = true;
+  key.shadow.mapSize.set(LOW ? 1024 : 2048, LOW ? 1024 : 2048);
+  key.shadow.camera.left = -4; key.shadow.camera.right = 4; key.shadow.camera.top = 4; key.shadow.camera.bottom = -4;
+  key.shadow.bias = -.0006; key.shadow.normalBias = .02; key.shadow.radius = 4;
+  scene.add(key);
+  var rim = new T.DirectionalLight(0xb9c8ff, 1.6); rim.position.set(4, 2.5, -4); scene.add(rim);
+  scene.add(new T.HemisphereLight(0x8a8070, 0x050505, .25));
+
+  var ground = new T.Mesh(new T.PlaneGeometry(30, 30), new T.ShadowMaterial({ opacity:.7 }));
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true;
+
+  var cluster = new T.Group();
+  scene.add(cluster);
+  cluster.add(ground);
+  var LAYOUT = [
+    { seed:11, s:[1.05, .72, .9],  p:[-.95, 0, .35],  r:[.2, .5, -.12] },
+    { seed:29, s:[.8, .6, .74],    p:[.05, 0, -.75],  r:[-.1, 1.9, .08] },
+    { seed:47, s:[.95, .68, .86],  p:[1.25, 0, -.35], r:[.14, -.6, .1] },
+    { seed:83, s:[.82, .6, .7],    p:[.55, 0, .95],   r:[-.08, 2.6, -.06] },
+    { seed:5,  s:[.66, .5, .62],   p:[-1.9, 0, -.7],  r:[.1, 1.1, .05] }
+  ];
+  if (opts.single) LAYOUT = [{ seed:11, s:[1.3, .9, 1.1], p:[0, 0, 0], r:[.2, .5, -.12] }];
+  var rocks = LAYOUT.map(function(L){
+    var geo = makeRock(L.seed, L.s);
+    var m = new T.Mesh(geo, mat);
+    m.castShadow = true; m.receiveShadow = true;
+    m.rotation.set(L.r[0], L.r[1], L.r[2]);
+    m.updateMatrixWorld();
+    var bb = new T.Box3().setFromObject(m);
+    m.position.set(L.p[0], -bb.min.y - .07, L.p[2]);
+    cluster.add(m);
+    return m;
+  });
+  var bbAll = new T.Box3().setFromObject(cluster);
+  var center = new T.Vector3(); bbAll.getCenter(center);
+  cluster.children.forEach(function(ch){ if (ch !== ground){ ch.position.x -= center.x; ch.position.z -= center.z; } });
+  var lookY = (bbAll.max.y - bbAll.min.y) * .35;
+
+  /* ---------- camera rig ---------- */
+  var yaw = .35, pitch = .32, dist = opts.single ? 6.5 : 8.2, vy = 0, vp = 0;
+  var W = 0, H = 0;
+  function resize(){
+    var w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight;
+    if (w === W && h === H) return;
+    W = w; H = h;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.fov = w < h ? 44 : 30;
+    camera.updateProjectionMatrix();
+  }
+  function place(d){
+    var dd = d * (W < H ? Math.min(1.9, 1.15 * H / W * .8) : 1);
+    camera.position.set(Math.sin(yaw) * Math.cos(pitch) * dd, lookY + Math.sin(pitch) * dd, Math.cos(yaw) * Math.cos(pitch) * dd);
+    camera.lookAt(0, lookY, 0);
+  }
+  return {
+    ok:true,
+    resize:resize,
+    // intro: t 0..1 — dolly out and orbit
+    intro:function(k, now){
+      resize();
+      var e = 1 - Math.pow(1 - k, 3);
+      yaw = -.55 + e * .95; pitch = .16 + e * .2;
+      place(dist * (.62 + .38 * e));
+      renderer.render(scene, camera);
+    },
+    // viewer: drag with inertia, slow drift when idle
+    frame:function(dt, dragging){
+      resize();
+      if (!dragging){ yaw += vy + dt * .12; pitch += vp; vy *= .93; vp *= .93; }
+      pitch = Math.max(.05, Math.min(1.1, pitch));
+      place(dist);
+      renderer.render(scene, camera);
+    },
+    drag:function(dx, dy){ vy = -dx * .006; vp = dy * .004; yaw += vy; pitch += vp; },
+    zoom:function(f){ dist = Math.max(4.2, Math.min(13, dist * f)); },
+    reset:function(){ yaw = .35; pitch = .32; vy = vp = 0; }
+  };
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var BIRTH = performance.now();
+  var RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function(id){ return document.getElementById(id); };
+  var body = document.body, root = document.documentElement;
+  root.style.overflow = "hidden";
+
+  /* ------------------------------------------------------------
+     CONTENT — every figure comes from the four sources in the menu
+  ------------------------------------------------------------ */
+  var CH = [
+    { id:"discovery", name:"الاكتشاف" },
+    { id:"element",   name:"العنصر" },
+    { id:"isotopes",  name:"النظائر" },
+    { id:"power",     name:"الكهرباء" },
+    { id:"medicine",  name:"الطب" },
+    { id:"marine",    name:"البحر والصناعة" },
+    { id:"future",    name:"خطة المملكة" }
+  ];
+  // [chapter, stat, unit, title, note, arabicStat?, tall?]
+  var SHOTS = [
+    [0,"110","مليون طن من الخام","حجم الخام المُعلن","أعلنت المملكة في 14 سبتمبر 2026 اكتشاف نحو 110 ملايين طن من الخام في جبل صايد بالمدينة المنورة."],
+    [0,"REE","معادن أرضية نادرة","خامٌ متعدد الثروات","الخام غنيّ بالمعادن الأرضية النادرة، ومصحوب بتركيزات واعدة من اليورانيوم."],
+    [0,"؟","نسبة اليورانيوم في الخام","الرقم يخص الخام كله","رقم 110 ملايين طن يخص كمية الخام كاملة، أما نسبة اليورانيوم فيه فلم تُعلن بعد.",1],
+    [1,"92","العدد الذري","أثقل ما تحمله الأرض","اليورانيوم فلز فضي ثقيل عدده الذري 92، وتتوزع إلكتروناته على سبعة مستويات للطاقة.",0,1],
+    [1,"1789","سنة الاكتشاف","من كلابروت إلى أورانوس","اكتشفه الكيميائي الألماني مارتن كلابروت عام 1789، وسمّاه نسبةً إلى كوكب أورانوس."],
+    [1,"U","في الصخور والتربة والبحر","عنصرٌ في كل مكان","هو أثقل عنصر يوجد في الطبيعة بكميات معتبرة، ويتوزع بتركيزات ضئيلة في الصخور والتربة وحتى مياه البحر."],
+    [2,"99.3%","اليورانيوم-238","النظير الغالب","معظم اليورانيوم الطبيعي من النظير 238، بنسبة 99.3% تقريباً."],
+    [2,"0.7%","اليورانيوم-235","النظير القابل للانشطار","لا يتجاوز النظير 235 نحو 0.7% من اليورانيوم الطبيعي، وهو النظير القابل للانشطار. في الرسم: 7 نقاط مضيئة من كل 1000."],
+    [2,"4–5%","تركيز الوقود بعد التخصيب","التخصيب","يُرفع تركيز اليورانيوم-235 في وقود محطات الكهرباء إلى نحو 4 إلى 5%."],
+    [3,"24/7","تشغيل على مدار الساعة","من الانشطار إلى التوربين","في المفاعل تنشطر أنوية اليورانيوم فتطلق حرارة تحوّل الماء إلى بخار يدير التوربينات، وتعمل المحطات على مدار الساعة."],
+    [3,"≈440","مفاعلاً حول العالم","أسطول عالمي","نحو 440 مفاعلاً للطاقة تعمل حول العالم."],
+    [3,"9%","من كهرباء العالم","حصة الطاقة النووية","تنتج المفاعلات قرابة 9% من كهرباء العالم، دون انبعاثات كربونية أثناء التشغيل."],
+    [4,"Mo-99","يُنتج في مفاعلات الأبحاث","من المفاعل","مفاعلات الأبحاث العاملة باليورانيوم تنتج نظائر مشعة طبية، أشهرها الموليبدنوم-99."],
+    [4,"Tc-99m","أشهر نظير في التصوير الطبي","إلى غرفة التشخيص","يتحوّل الموليبدنوم-99 إلى التكنيشيوم-99m، النظير الأوسع استخداماً في التصوير الطبي."],
+    [4,"عشرات الملايين","فحص تصوير سنوياً","القلب والسرطان والعظام","يُستخدم التكنيشيوم-99m في عشرات الملايين من فحوص التصوير سنوياً لتشخيص أمراض القلب والسرطان والعظام.",1],
+    [5,"سنوات","دون التزوّد بالوقود","قوة تُبحر طويلاً","تعمل الغواصات وحاملات الطائرات وكاسحات الجليد النووية بمفاعلات مدمجة تتيح لها الإبحار سنوات دون التزود بالوقود.",1],
+    [5,"19.1","غرام لكل سم³","الكثافة","تبلغ كثافة اليورانيوم نحو 19.1 غرام لكل سنتيمتر مكعب."],
+    [5,"+70%","أكثف من الرصاص","اليورانيوم المستنفد","لكثافته التي تفوق الرصاص بنحو 70%، يدخل اليورانيوم المستنفد في أثقال موازنة الطائرات ودروع الحماية من الإشعاع."],
+    [6,"الفوسفات","مصدر اليورانيوم المصاحب","من الأسمدة إلى الوقود","تخطط المملكة لاستخلاص اليورانيوم المصاحب ضمن صناعة الأسمدة الفوسفاتية.",1],
+    [6,"IAEA","المؤتمر العام · فيينا","منصة الإعلان","أُعلن الاكتشاف في المؤتمر العام للوكالة الدولية للطاقة الذرية في فيينا."],
+    [6,"سلمي","بشفافية ووفق الالتزامات الدولية","مزيج الطاقة الوطني","يأتي الاكتشاف ضمن توجه المملكة لإدخال الطاقة النووية في مزيج الطاقة الوطني، وأكد وزير الطاقة أن البرنامج سلمي ويسير بشفافية.",1]
+  ].map(function(r){ return { ch:r[0], stat:r[1], unit:r[2], title:r[3], note:r[4], ar:!!r[5], tall:!!r[6] }; });
+
+  var N = SHOTS.length;
+  var stage = $("stage"), world = $("world"), orb = $("orb"), headline = $("headline");
+  var rowsEl = $("rows"), gridBtn = $("gridBtn"), menuBtn = $("menuBtn");
+  var lit = $("lit"), plate = $("plate"), shotEl = $("shot");
+  var splash = $("splash"), bar = $("bar"), intro = $("intro");
+  function pad2(n){ return String(n).padStart(2, "0"); }
+
+  function makeFace(i){
+    var s = SHOTS[i], f = document.createElement("div");
+    f.className = "face";
+    var img = document.createElement("img"); img.alt = ""; img.draggable = false;
+    var t = document.createElement("div"); t.className = "txt";
+    var lab = document.createElement("div"); lab.className = "lab";
+    var n = document.createElement("span"); n.className = "numf"; n.textContent = pad2(s.ch + 1);
+    var nm = document.createElement("span"); nm.textContent = CH[s.ch].name;
+    lab.appendChild(n); lab.appendChild(nm);
+    var bot = document.createElement("div");
+    var st = document.createElement("div"); st.className = "stat" + (s.ar ? " ar" : ""); st.textContent = s.stat;
+    var u = document.createElement("div"); u.className = "unit"; u.textContent = s.unit;
+    bot.appendChild(st); bot.appendChild(u);
+    t.appendChild(lab); t.appendChild(bot);
+    f.appendChild(img); f.appendChild(t);
+    return { el:f, img:img };
+  }
+
+  /* ------------------------------------------------------------
+     BUILD: Fibonacci sphere + grouped grid
+  ------------------------------------------------------------ */
+  var GA = Math.PI * (3 - Math.sqrt(5));
+  var cards = [], gridFigs = [], textures = new Array(N);
+  var lastCh = -1;
+  SHOTS.forEach(function(s, i){
+    var y = 1 - (i / (N - 1)) * 2;
+    var rad = Math.sqrt(Math.max(0, 1 - y * y));
+    var th = i * GA, x = Math.cos(th) * rad, z = Math.sin(th) * rad;
+    var el = document.createElement("div");
+    el.className = "card" + (s.tall ? " tall" : "");
+    el.dataset.idx = i; el.tabIndex = 0; el.setAttribute("role", "button");
+    el.setAttribute("aria-label", s.title + ": " + s.stat + " " + s.unit);
+    var fig = document.createElement("figure");
+    var face = makeFace(i);
+    var back = document.createElement("div"); back.className = "back";
+    fig.appendChild(face.el); el.appendChild(fig); el.appendChild(back); orb.appendChild(el);
+    el.addEventListener("keydown", function(e){ if (e.key === "Enter" || e.key === " "){ e.preventDefault(); openShot(i, el); } });
+    cards.push({ el:el, face:face, back:back, x:x, y:y, z:z, lat:Math.asin(y) * 180 / Math.PI, lon:Math.atan2(x, z) * 180 / Math.PI, o:-1, d:-1 });
+  });
+  // grid: grouped by chapter, in reading order
+  SHOTS.map(function(s, i){ return i; }).sort(function(a, b){ return SHOTS[a].ch - SHOTS[b].ch || a - b; }).forEach(function(i){
+    var s = SHOTS[i];
+    if (s.ch !== lastCh){
+      lastCh = s.ch;
+      var h = document.createElement("h3"); h.className = "chap"; h.id = "g-" + CH[s.ch].id;
+      h.innerHTML = '<span class="numf">' + pad2(s.ch + 1) + '</span>';
+      h.appendChild(document.createTextNode(CH[s.ch].name));
+      rowsEl.appendChild(h);
+    }
+    var gf = document.createElement("figure");
+    gf.dataset.idx = i; gf.tabIndex = 0;
+    var face = makeFace(i);
+    var cap = document.createElement("figcaption"); cap.textContent = s.title;
+    gf.appendChild(face.el); gf.appendChild(cap); rowsEl.appendChild(gf);
+    gridFigs[i] = { el:gf, face:face };
+    gf.addEventListener("click", function(){ openShot(i, gf); });
+    gf.addEventListener("keydown", function(e){ if (e.key === "Enter"){ e.preventDefault(); openShot(i, gf); } });
+  });
+
+  /* menu */
+  var nav = $("menuNav");
+  var all = document.createElement("a"); all.href = "#"; all.className = "all"; all.dataset.grid = ""; all.textContent = "الأرشيف الكامل";
+  nav.appendChild(all);
+  var sp = document.createElement("a"); sp.href = "#"; sp.className = "spec"; sp.dataset.spec = ""; sp.textContent = "عيّنة الخام ثلاثية الأبعاد";
+  nav.appendChild(sp);
+  CH.forEach(function(c, k){
+    var a = document.createElement("a"); a.href = "#" + c.id; a.dataset.ch = k;
+    a.innerHTML = '<span class="numf">' + pad2(k + 1) + '</span>';
+    a.appendChild(document.createTextNode(c.name));
+    nav.appendChild(a);
+  });
+
+  /* ------------------------------------------------------------
+     LAYOUT
+  ------------------------------------------------------------ */
+  var R = 300, CW = 140, PERSP = 1150, lastW = -1, lastH = -1;
+  function layout(force){
+    var w = innerWidth, h = innerHeight;
+    if (!force && Math.abs(w - lastW) < 20 && Math.abs(h - lastH) < 20) return;
+    lastW = w; lastH = h;
+    var hr = w <= 380 ? .38 : w <= 640 ? .42 : .46;
+    var wr = w <= 380 ? .48 : w <= 640 ? .52 : .58;
+    var fl = w <= 380 ? 108 : w <= 640 ? 120 : 155;
+    var sc = w <= 380 ? .44 : w <= 640 ? .46 : .47;
+    R = Math.max(fl, Math.min(480, h * hr, w * wr));
+    CW = Math.round(Math.max(72, R * sc));
+    PERSP = w <= 380 ? 620 : w <= 640 ? 760 : w <= 900 ? 920 : 1150;
+    root.style.setProperty("--persp", PERSP + "px");
+    root.style.setProperty("--cw", CW + "px");
+    cards.forEach(function(c, i){
+      var tall = SHOTS[i].tall, st = c.el.style;
+      st.width = CW + "px";
+      st.height = (tall ? CW * 1.25 : CW / 1.5) + "px";
+      st.marginLeft = (-CW / 2) + "px";
+      st.marginTop = (tall ? CW * -.625 : -CW / 3) + "px";
+      st.transform = "translate3d(" + (c.x * R) + "px," + (-c.y * R) + "px," + (c.z * R) + "px) rotateY(" + c.lon + "deg) rotateX(" + c.lat + "deg)";
+    });
+  }
+  layout(true);
+  addEventListener("resize", function(){ layout(false); });
+  addEventListener("orientationchange", function(){ setTimeout(function(){ layout(true); }, 220); });
+  if (window.visualViewport){
+    visualViewport.addEventListener("resize", function(){ layout(false); });
+    visualViewport.addEventListener("scroll", function(){ layout(false); });
+  }
+
+  /* ------------------------------------------------------------
+     PLATE TEXTURES — one drawing per chapter, varied per card
+  ------------------------------------------------------------ */
+  var G = "210,230,142", C = "233,220,203";
+  function rng(seed){ var s = seed | 0; return function(){ s = (s + 0x6d2b79f5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function drawTexture(i, done){
+    var s = SHOTS[i], W = s.tall ? 480 : 720, H = s.tall ? 600 : 480;
+    var cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+    var x = cv.getContext("2d"), r = rng(9214 + i * 131), v = i % 3;
+    x.fillStyle = "#0a101c"; x.fillRect(0, 0, W, H);
+    var g0 = x.createRadialGradient(W * (.25 + v * .25), H * .35, 0, W * .5, H * .5, W * .8);
+    g0.addColorStop(0, "rgba(" + G + ",.10)"); g0.addColorStop(1, "rgba(" + G + ",0)");
+    x.fillStyle = g0; x.fillRect(0, 0, W, H);
+    x.lineCap = "round";
+    var cx = W * (s.tall ? .5 : .32), cy = H * (s.tall ? .38 : .45);
+    switch (s.ch){
+      case 0: // topographic contours of the mountain
+        var ox = W * (.28 + v * .12), oy = H * (.42 + r() * .1), ph = r() * 6;
+        for (var k = 1; k <= 18; k++){
+          x.beginPath();
+          for (var a = 0; a <= 64; a++){
+            var t = a / 64 * Math.PI * 2;
+            var rr = k * W * .028 * (1 + .18 * Math.sin(3 * t + ph + k * .12) + .09 * Math.sin(5 * t - ph));
+            var px = ox + Math.cos(t) * rr * 1.35, py = oy + Math.sin(t) * rr * .8;
+            a ? x.lineTo(px, py) : x.moveTo(px, py);
+          }
+          x.strokeStyle = "rgba(" + (k % 5 === 0 ? G : C) + "," + (k % 5 === 0 ? .42 : .12) + ")";
+          x.lineWidth = k % 5 === 0 ? 1.4 : 1;
+          x.stroke();
+        }
+        x.fillStyle = "rgba(" + G + ",.9)"; x.beginPath(); x.arc(ox, oy, 3, 0, 7); x.fill();
+        break;
+      case 1: // Bohr shells for uranium: 2, 8, 18, 32, 21, 9, 2
+        var shells = [2, 8, 18, 32, 21, 9, 2], base = Math.min(W, H) * .07, rot = r() * 6;
+        shells.forEach(function(n, k){
+          var rr = base + k * Math.min(W, H) * .062;
+          x.strokeStyle = "rgba(" + C + ",.14)"; x.lineWidth = 1;
+          x.beginPath(); x.arc(cx, cy, rr, 0, 7); x.stroke();
+          for (var e = 0; e < n; e++){
+            var t = rot + k * .7 + e / n * Math.PI * 2;
+            x.fillStyle = "rgba(" + G + "," + (k === 3 ? .95 : .6) + ")";
+            x.beginPath(); x.arc(cx + Math.cos(t) * rr, cy + Math.sin(t) * rr, 2.2, 0, 7); x.fill();
+          }
+        });
+        var ng = x.createRadialGradient(cx, cy, 0, cx, cy, base * .9);
+        ng.addColorStop(0, "rgba(" + G + ",.9)"); ng.addColorStop(1, "rgba(" + G + ",0)");
+        x.fillStyle = ng; x.beginPath(); x.arc(cx, cy, base * .9, 0, 7); x.fill();
+        break;
+      case 2: // 1000 atoms, 7 of them U-235
+        var cols = 40, rows = 25, gx = W * .86 / cols, gy = H * .74 / rows, x0 = W * .07 + gx / 2, y0 = H * .13;
+        var lit7 = {}; while (Object.keys(lit7).length < 7) lit7[(r() * 1000) | 0] = 1;
+        for (var q = 0; q < 1000; q++){
+          var px = x0 + (q % cols) * gx, py = y0 + ((q / cols) | 0) * gy;
+          if (lit7[q]){
+            x.fillStyle = "rgba(" + G + ",.25)"; x.beginPath(); x.arc(px, py, 7, 0, 7); x.fill();
+            x.fillStyle = "rgba(" + G + ",1)"; x.beginPath(); x.arc(px, py, 3, 0, 7); x.fill();
+          } else {
+            x.fillStyle = "rgba(" + C + ",.16)"; x.beginPath(); x.arc(px, py, 1.6, 0, 7); x.fill();
+          }
+        }
+        break;
+      case 3: // steam and turbine lines
+        for (var l = 0; l < 26; l++){
+          x.beginPath();
+          var yb = H * (.08 + l * .034), amp = 6 + (l % 7) * 3, fr = .008 + v * .003;
+          for (var X = 0; X <= W; X += 6){
+            var Y = yb + Math.sin(X * fr + l * .5) * amp * (X / W);
+            X ? x.lineTo(X, Y) : x.moveTo(X, Y);
+          }
+          x.strokeStyle = "rgba(" + (l % 6 === 2 ? G : C) + "," + (l % 6 === 2 ? .45 : .1) + ")";
+          x.lineWidth = 1; x.stroke();
+        }
+        var tx = W * .3, ty = H * .45;
+        for (var b = 0; b < 12; b++){
+          var t = b / 12 * Math.PI * 2 + r();
+          x.strokeStyle = "rgba(" + G + ",.35)"; x.beginPath();
+          x.moveTo(tx, ty); x.quadraticCurveTo(tx + Math.cos(t + .5) * 50, ty + Math.sin(t + .5) * 50, tx + Math.cos(t) * 90, ty + Math.sin(t) * 90); x.stroke();
+        }
+        break;
+      case 4: // scan rings with a crosshair
+        var sx = W * (.3 + v * .08), sy = H * .46;
+        for (var k2 = 1; k2 < 16; k2++){
+          x.strokeStyle = "rgba(" + (k2 % 4 === 0 ? G : C) + "," + (.34 - k2 * .016) + ")";
+          x.lineWidth = k2 % 4 === 0 ? 1.4 : 1;
+          x.beginPath(); x.arc(sx, sy, k2 * 18, 0, 7); x.stroke();
+        }
+        x.strokeStyle = "rgba(" + G + ",.4)"; x.beginPath();
+        x.moveTo(sx - 300, sy); x.lineTo(sx + 300, sy); x.moveTo(sx, sy - 300); x.lineTo(sx, sy + 300); x.stroke();
+        for (var d = 0; d < 400; d++){
+          var ang = r() * 6.283, rad2 = Math.pow(r(), .6) * 140;
+          x.fillStyle = "rgba(" + G + "," + (.5 * (1 - rad2 / 140)) + ")";
+          x.fillRect(sx + Math.cos(ang) * rad2, sy + Math.sin(ang) * rad2, 1.6, 1.6);
+        }
+        break;
+      case 5: // sonar arcs over a flat sea
+        var bx = W * (.2 + v * .15), by = H * .92;
+        for (var k3 = 1; k3 < 22; k3++){
+          x.strokeStyle = "rgba(" + (k3 % 5 === 0 ? G : C) + "," + (k3 % 5 === 0 ? .4 : .11) + ")";
+          x.beginPath(); x.arc(bx, by, k3 * 26, Math.PI * 1.08, Math.PI * 1.92); x.stroke();
+        }
+        for (var l2 = 0; l2 < 8; l2++){
+          x.strokeStyle = "rgba(" + C + ",.08)"; x.beginPath();
+          x.moveTo(0, H * .2 + l2 * 9); x.lineTo(W, H * .2 + l2 * 9); x.stroke();
+        }
+        break;
+      default: // hexagonal phosphate lattice
+        var hs = 26, hh = hs * Math.sqrt(3);
+        for (var row = -1; row * hh * .5 < H + hh; row++){
+          for (var col = -1; col * hs * 1.5 < W + hs; col++){
+            var hx = col * hs * 1.5, hy = row * hh + (col % 2 ? hh / 2 : 0);
+            var on = r() < .07 + v * .02;
+            x.beginPath();
+            for (var p = 0; p < 6; p++){ var a2 = p / 6 * Math.PI * 2; var qx = hx + Math.cos(a2) * hs * .92, qy = hy + Math.sin(a2) * hs * .92; p ? x.lineTo(qx, qy) : x.moveTo(qx, qy); }
+            x.closePath();
+            if (on){ x.fillStyle = "rgba(" + G + ",.22)"; x.fill(); }
+            x.strokeStyle = "rgba(" + (on ? G : C) + "," + (on ? .6 : .09) + ")"; x.stroke();
+          }
+        }
+    }
+    // darken the reading side so the numbers stay legible
+    var sh = x.createLinearGradient(0, H, 0, 0);
+    sh.addColorStop(0, "rgba(10,16,28,.9)"); sh.addColorStop(.55, "rgba(10,16,28,.25)"); sh.addColorStop(1, "rgba(10,16,28,.55)");
+    x.fillStyle = sh; x.fillRect(0, 0, W, H);
+    // grain
+    for (var gdot = 0; gdot < 900; gdot++){ x.fillStyle = "rgba(255,255,255," + (r() * .05) + ")"; x.fillRect(r() * W, r() * H, 1, 1); }
+    try {
+      cv.toBlob(function(bl){ done(bl ? URL.createObjectURL(bl) : cv.toDataURL("image/jpeg", .86)); }, "image/webp", .88);
+    } catch (e){ done(""); }
+  }
+
+  /* ------------------------------------------------------------
+     SPLASH — waits for the 21 plates and the fonts
+  ------------------------------------------------------------ */
+  var TOTAL = N + 2, reported = 0, splashDone = false;
+  function report(){ reported++; bar.style.transform = "scaleX(" + Math.min(1, reported / TOTAL) + ")"; if (reported >= TOTAL) setTimeout(endSplash, Math.max(0, 1150 - (performance.now() - BIRTH))); }
+  setTimeout(endSplash, 9000);
+  var q = 0;
+  (function next(){
+    if (q >= N) return;
+    var i = q++;
+    drawTexture(i, function(url){
+      textures[i] = url;
+      if (url){
+        cards[i].face.img.src = url; gridFigs[i].face.img.src = url;
+        cards[i].back.style.backgroundImage = "url(" + url + ")";
+      }
+      cards[i].face.el.classList.add("in");
+      report();
+    });
+    setTimeout(next, 16);
+  })();
+  var ORE = null, oreCanvas = null;
+  setTimeout(function(){
+    try {
+      oreCanvas = document.createElement("canvas"); oreCanvas.id = "ore"; oreCanvas.setAttribute("aria-hidden", "true");
+      intro.insertBefore(oreCanvas, intro.firstChild);
+      ORE = window.createOre ? createOre(oreCanvas, { low: matchMedia("(pointer:coarse)").matches || innerWidth < 700 }) : null;
+    } catch (e){ ORE = null; }
+    if (ORE){ film.style.display = "none"; FILM_MS = RM ? 700 : 4600; }
+    else { if (oreCanvas && oreCanvas.parentNode) oreCanvas.parentNode.removeChild(oreCanvas); body.setAttribute("data-nospec", ""); }
+    report();
+  }, 40);
+  var fontsDone = false;
+  function fontReport(){ if (fontsDone) return; fontsDone = true; report(); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fontReport, fontReport); else fontReport();
+  setTimeout(fontReport, 4000);
+
+  function endSplash(){
+    if (splashDone) return;
+    splashDone = true;
+    bar.style.transform = "scaleX(1)";
+    setTimeout(function(){
+      splash.classList.add("out");
+      setTimeout(function(){ if (splash.parentNode) splash.parentNode.removeChild(splash); }, 950);
+      startIntro();
+    }, 280);
+  }
+
+  /* ------------------------------------------------------------
+     INTRO — the ore specimen spins at double speed, then the veil closes
+  ------------------------------------------------------------ */
+  var rock = (function(){
+    var rnd = rng(20260914);
+    function norm(v){ var l = Math.hypot(v[0], v[1], v[2]); return [v[0]/l, v[1]/l, v[2]/l]; }
+    var g = (1 + Math.sqrt(5)) / 2;
+    var V = [[-1,g,0],[1,g,0],[-1,-g,0],[1,-g,0],[0,-1,g],[0,1,g],[0,-1,-g],[0,1,-g],[g,0,-1],[g,0,1],[-g,0,-1],[-g,0,1]].map(norm);
+    var F = [[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
+    for (var l = 0; l < 3; l++){
+      var cache = {}, NF = [];
+      var mid = function(a, b){ var k = a < b ? a + "_" + b : b + "_" + a; if (cache[k] != null) return cache[k];
+        V.push(norm([(V[a][0]+V[b][0])/2,(V[a][1]+V[b][1])/2,(V[a][2]+V[b][2])/2])); return (cache[k] = V.length - 1); };
+      F.forEach(function(f){ var ab = mid(f[0], f[1]), bc = mid(f[1], f[2]), ca = mid(f[2], f[0]); NF.push([f[0],ab,ca],[f[1],bc,ab],[f[2],ca,bc],[ab,bc,ca]); });
+      F = NF;
+    }
+    var bumps = [], cuts = [], i;
+    for (i = 0; i < 16; i++) bumps.push({ c:norm([rnd()*2-1, rnd()*2-1, rnd()*2-1]), a:rnd()*.42 - .18, p:2 + rnd()*5 });
+    for (i = 0; i < 7; i++) cuts.push({ n:norm([rnd()*2-1, rnd()*2-1, rnd()*2-1]), d:.62 + rnd()*.22 });
+    var P = V.map(function(v){
+      var r = 1;
+      bumps.forEach(function(b){ var d = Math.max(0, v[0]*b.c[0] + v[1]*b.c[1] + v[2]*b.c[2]); r += b.a * Math.pow(d, b.p); });
+      r += (rnd() - .5) * .05;
+      var p = [v[0]*r*1.08, v[1]*r*.84, v[2]*r*.96];
+      cuts.forEach(function(c){ var d = p[0]*c.n[0] + p[1]*c.n[1] + p[2]*c.n[2]; if (d > c.d){ var k = d - c.d; p = [p[0]-c.n[0]*k, p[1]-c.n[1]*k, p[2]-c.n[2]*k]; } });
+      return p;
+    });
+    var faces = F.map(function(f){
+      var u = norm([V[f[0]][0]+V[f[1]][0]+V[f[2]][0], V[f[0]][1]+V[f[1]][1]+V[f[2]][1], V[f[0]][2]+V[f[1]][2]+V[f[2]][2]]);
+      var w1 = Math.abs(Math.sin(u[0]*5.1 + u[1]*3.7 - u[2]*4.3 + Math.sin(u[2]*6.2)*1.3));
+      var w2 = Math.abs(Math.sin(-u[0]*3.3 + u[1]*6.1 + u[2]*2.2 + Math.cos(u[0]*5)*1.1));
+      var e = Math.max(w1 < .16 ? 1 - w1/.16 : 0, w2 < .11 ? (1 - w2/.11)*.8 : 0);
+      if (rnd() < .035) e = Math.max(e, .55 + rnd()*.45);
+      return { i:f, e:e, ph:rnd()*6.28, tone:rnd()*.12 };
+    });
+    return { P:P, faces:faces };
+  })();
+
+  var film = $("film"), fctx = film.getContext("2d"), filmOn = false, filmT0 = 0, FILM_MS = RM ? 700 : 3600;
+  var LGT = (function(){ var v = [-.55,.65,.55], l = Math.hypot(v[0],v[1],v[2]); return [v[0]/l, v[1]/l, v[2]/l]; })();
+  function drawRock(now){
+    var DPR = Math.min(2, devicePixelRatio || 1), W = innerWidth, H = innerHeight;
+    if (film.width !== Math.round(W * DPR)){ film.width = Math.round(W * DPR); film.height = Math.round(H * DPR); }
+    var k = Math.min(1, (now - filmT0) / FILM_MS), e = 1 - Math.pow(1 - k, 3), t = now / 1000;
+    var base = Math.min(W, H) * (.16 + .08 * e), cx = W / 2, cy = H * .47, CAM = 4.2, f = base * CAM;
+    var ry = .6 + e * Math.PI * 2 * 1.4, rx = -.32 + .12 * Math.sin(e * 3);
+    var cyR = Math.cos(ry), syR = Math.sin(ry), cxR = Math.cos(rx), sxR = Math.sin(rx);
+    function proj(p){ var x1 = p[0]*cyR + p[2]*syR, z1 = -p[0]*syR + p[2]*cyR; return [x1, p[1]*cxR - z1*sxR, p[1]*sxR + z1*cxR]; }
+    fctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    fctx.fillStyle = "#05080f"; fctx.fillRect(0, 0, W, H);
+    var hg = fctx.createRadialGradient(cx, cy, base * .2, cx, cy, base * 2.8);
+    hg.addColorStop(0, "rgba(" + G + "," + (.12 + .06 * e).toFixed(3) + ")"); hg.addColorStop(1, "rgba(" + G + ",0)");
+    fctx.fillStyle = hg; fctx.fillRect(0, 0, W, H);
+    var R3 = rock.P.map(proj), S2 = R3.map(function(p){ var kk = f / (CAM - p[2]); return [cx + p[0]*kk, cy - p[1]*kk]; });
+    var vis = [];
+    rock.faces.forEach(function(fc){
+      var A = R3[fc.i[0]], B = R3[fc.i[1]], Cc = R3[fc.i[2]];
+      var u = [B[0]-A[0], B[1]-A[1], B[2]-A[2]], v = [Cc[0]-A[0], Cc[1]-A[1], Cc[2]-A[2]];
+      var n = [u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]];
+      var nl = Math.hypot(n[0], n[1], n[2]) || 1; n = [n[0]/nl, n[1]/nl, n[2]/nl];
+      var mx = (A[0]+B[0]+Cc[0])/3, my = (A[1]+B[1]+Cc[1])/3, mz = (A[2]+B[2]+Cc[2])/3;
+      if (n[0]*-mx + n[1]*-my + n[2]*(CAM - mz) <= 0) return;
+      vis.push({ fc:fc, n:n, z:mz });
+    });
+    vis.sort(function(a, b){ return a.z - b.z; });
+    var glowK = .4 + .9 * e;
+    vis.forEach(function(o){
+      var fc = o.fc, n = o.n, a = fc.i[0], b = fc.i[1], c = fc.i[2];
+      var d = Math.max(0, n[0]*LGT[0] + n[1]*LGT[1] + n[2]*LGT[2]);
+      var rim = Math.pow(1 - Math.max(0, n[2]), 3) * .6, tn = 1 - fc.tone;
+      var rr = (24 + 80*d) * tn + 210*rim*.3, gg = (28 + 84*d) * tn + 230*rim*.3, bb = (32 + 78*d) * tn + 142*rim*.3;
+      if (fc.e > 0){
+        var pulse = Math.min(1, fc.e * glowK * (.72 + .28 * Math.sin(t * 4.4 + fc.ph)));
+        rr += (210 - rr) * pulse; gg += (230 - gg) * pulse; bb += (142 - bb) * pulse;
+      }
+      var col = "rgb(" + (rr|0) + "," + (gg|0) + "," + (bb|0) + ")";
+      fctx.fillStyle = col; fctx.strokeStyle = col; fctx.lineWidth = .7;
+      fctx.beginPath(); fctx.moveTo(S2[a][0], S2[a][1]); fctx.lineTo(S2[b][0], S2[b][1]); fctx.lineTo(S2[c][0], S2[c][1]); fctx.closePath(); fctx.fill(); fctx.stroke();
+    });
+    return k;
+  }
+  function filmLoop(now){
+    if (!filmOn) return;
+    var k;
+    if (ORE){ k = Math.min(1, (now - filmT0) / FILM_MS); ORE.intro(k, now); }
+    else k = drawRock(now);
+    if (k >= 1) reveal();
+    requestAnimationFrame(filmLoop);
+  }
+  function startIntro(){
+    filmOn = true; filmT0 = performance.now();
+    requestAnimationFrame(filmLoop);
+    setTimeout(reveal, FILM_MS + 3000);
+  }
+  drawRock(performance.now());
+  $("skip").addEventListener("click", function(e){ e.stopPropagation(); reveal(); });
+
+  var revealed = false;
+  function reveal(){
+    if (revealed) return;
+    revealed = true;
+    intro.classList.add("closing");
+    body.classList.remove("locked");
+    root.style.overflow = "";
+    layout(true); frame(performance.now(), true);
+    requestAnimationFrame(function(){ layout(true); });
+    setTimeout(function(){
+      layout(true);
+      body.classList.add("revealed");
+      intro.classList.add("gone");
+      setTimeout(function(){
+        filmOn = false;
+        if (ORE && oreCanvas){ $("spStage").appendChild(oreCanvas); ORE.reset(); }
+        if (intro.parentNode) intro.parentNode.removeChild(intro);
+      }, 700);
+      var h = (location.hash || "").slice(1);
+      CH.forEach(function(c, k){ if (c.id === h) setTimeout(function(){ goChapter(k, false); }, 900); });
+    }, 1000);
+  }
+
+  /* ------------------------------------------------------------
+     CAMERA LOOP
+  ------------------------------------------------------------ */
+  var spin = 0, tilt = -4, camZ = 0, dragX = 0, dragY = 0, velX = 0, velY = 0;
+  var lastNow = performance.now(), headOp = -1, PITCH = 32, focused = -1, dragging = false, deep = false, aim = null;
+  var DEG = Math.PI / 180;
+  function clampPitch(){ var lo = -PITCH - tilt, hi = PITCH - tilt; if (dragY < lo){ dragY = lo; velY = 0; } if (dragY > hi){ dragY = hi; velY = 0; } }
+  function r3(v){ return Math.round(v * 1000) / 1000; }
+
+  function frame(now, once){
+    var isLit = body.classList.contains("lit");
+    var dtf = Math.min(6, Math.max(.2, ((now - lastNow) || 16.7) / 16.7)); lastNow = now;
+    if (aim && !dragging){
+      var ek = 1 - Math.pow(1 - .11, dtf);
+      dragX += (aim.x - dragX) * ek; dragY += (aim.y - dragY) * ek;
+      if (Math.abs(aim.x - dragX) < .3 && Math.abs(aim.y - dragY) < .3){ dragX = aim.x; dragY = aim.y; var cb2 = aim.cb; aim = null; if (cb2) cb2(); }
+    } else if (!dragging && !isLit){
+      dragX += velX; dragY += velY; velX *= .94; velY *= .94;
+      if (Math.abs(velX) < .002) velX = 0;
+      if (Math.abs(velY) < .002) velY = 0;
+    }
+    clampPitch();
+    var p = Math.min(1, Math.max(0, (window.scrollY || 0) / (innerHeight * .16)));
+    var camT = p * Math.min(64, R * .12);
+    camZ += (camT - camZ) * .075; if (Math.abs(camT - camZ) < .01) camZ = camT;
+    var isDeep = p > .35;
+    if (isDeep !== deep){ deep = isDeep; body.classList.toggle("deep", deep); }
+
+    var sx = tilt + dragY, sy = spin + dragX;
+    world.style.transform = "translateZ(" + camZ.toFixed(3) + "px) rotateY(" + sy.toFixed(3) + "deg) rotateX(" + sx.toFixed(3) + "deg)";
+    // the title sits just in front of the nearest plate, scaled back to its natural size
+    var hz = R * 1.06, hk = (PERSP - hz - camZ) / (PERSP - camZ);
+    headline.style.transform = "rotateX(" + (-sx).toFixed(3) + "deg) rotateY(" + (-sy).toFixed(3) + "deg) translateZ(" + hz.toFixed(2) + "px) scale(" + hk.toFixed(4) + ")";
+    var hop = r3(Math.max(0, 1 - p * .55) * (focused >= 0 ? .12 : 1));
+    if (hop !== headOp){ headOp = hop; headline.style.opacity = String(hop); }
+
+    var ca = Math.cos(sx * DEG), sa = Math.sin(sx * DEG), cb = Math.cos(sy * DEG), sb = Math.sin(sy * DEG);
+    var shade = 1 - Math.min(1, p * 1.6), near = PERSP * .66;
+    for (var i = 0; i < N; i++){
+      var c = cards[i];
+      var z1 = -c.y * sa + c.z * ca, zf = -c.x * sb + z1 * cb;
+      var base = .14 + .86 * Math.pow((zf + 1) / 2, .85);
+      var dim = shade * (1 - base), absZ = zf * R + camZ;
+      var fade = absZ > near ? Math.max(0, 1 - (absZ - near) / 190) : 1;
+      if (focused >= 0){ dim = Math.min(1, dim + .78); if (i === focused) fade = 0; }
+      dim = r3(dim); fade = r3(fade);
+      if (fade !== c.o){ c.o = fade; c.el.style.opacity = fade; }
+      if (dim !== c.d){ c.d = dim; c.el.style.setProperty("--d", dim); }
+    }
+    if (!once) requestAnimationFrame(frame);
+  }
+  frame(performance.now(), true);
+  requestAnimationFrame(frame);
+
+  // turn the sphere so a card faces the camera
+  function face(i, cb){
+    var c = cards[i], tx = -c.lon - spin;
+    while (tx - dragX > 180) tx -= 360;
+    while (tx - dragX < -180) tx += 360;
+    var ty = Math.max(-PITCH, Math.min(PITCH, -c.lat)) - tilt;
+    velX = velY = 0;
+    if (RM){ dragX = tx; dragY = ty; if (cb) setTimeout(cb, 30); return; }
+    aim = { x:tx, y:ty, cb:cb };
+  }
+  function goChapter(k, open){
+    var i = SHOTS.findIndex(function(s){ return s.ch === k; });
+    if (i < 0) return;
+    try { history.replaceState(null, "", "#" + CH[k].id); } catch(_){}
+    if (body.classList.contains("gridview")){
+      var h = $("g-" + CH[k].id); if (h) h.scrollIntoView({ behavior: RM ? "auto" : "smooth", block:"start" });
+      return;
+    }
+    window.scrollTo(0, 0);
+    face(i, open ? function(){ openShot(i, cards[i].el); } : null);
+  }
+
+  addEventListener("scroll", function(){ var max = innerHeight * .16; if (window.scrollY > max + 1) window.scrollTo(0, max); }, { passive:true });
+
+  /* ------------------------------------------------------------
+     DRAG
+  ------------------------------------------------------------ */
+  var COARSE = matchMedia("(pointer:coarse)").matches, ptr = null;
+  stage.addEventListener("pointerdown", function(e){
+    if (body.classList.contains("lit") || body.classList.contains("gridview")) return;
+    if (e.button > 0) return;
+    var cardEl = e.target.closest ? e.target.closest(".card") : null;
+    ptr = { id:e.pointerId, type:e.pointerType, sx:e.clientX, sy:e.clientY, lx:e.clientX, ly:e.clientY, card:cardEl, moved:0, pending:e.pointerType === "touch", cancelled:false };
+    velX = velY = 0; aim = null;
+    if (!ptr.pending){ dragging = true; try { stage.setPointerCapture(e.pointerId); } catch(_){} }
+  });
+  stage.addEventListener("pointermove", function(e){
+    if (!ptr || ptr.id !== e.pointerId || ptr.cancelled) return;
+    var tdx = e.clientX - ptr.sx, tdy = e.clientY - ptr.sy;
+    ptr.moved = Math.max(ptr.moved, Math.hypot(tdx, tdy));
+    if (ptr.pending){
+      if (Math.hypot(tdx, tdy) < 10) return;
+      if (Math.abs(tdy) > Math.abs(tdx) * 1.15){ ptr.cancelled = true; dragging = false; return; }
+      ptr.pending = false; dragging = true;
+      try { stage.setPointerCapture(e.pointerId); } catch(_){}
+    }
+    if (!dragging) return;
+    var dx = e.clientX - ptr.lx, dy = e.clientY - ptr.ly;
+    ptr.lx = e.clientX; ptr.ly = e.clientY;
+    velX = dx * .13; velY = -dy * .13;
+    dragX += velX; dragY += velY; clampPitch();
+  });
+  function endPtr(e, cancel){
+    if (!ptr || ptr.id !== e.pointerId) return;
+    var slop = (COARSE || ptr.type === "touch") ? 14 : 6;
+    var hit = !cancel && !ptr.cancelled && ptr.moved <= slop && ptr.card;
+    if (hit) velX = velY = 0;
+    dragging = false;
+    try { stage.releasePointerCapture(e.pointerId); } catch(_){}
+    var card = ptr.card; ptr = null;
+    if (hit) openShot(+card.dataset.idx, card);
+  }
+  stage.addEventListener("pointerup", function(e){ endPtr(e, false); });
+  stage.addEventListener("pointercancel", function(e){ endPtr(e, true); });
+  stage.addEventListener("dragstart", function(e){ e.preventDefault(); });
+
+  /* ------------------------------------------------------------
+     LIGHTBOX (FLIP)
+  ------------------------------------------------------------ */
+  var closeTimer = 0, litIdx = -1, shotFace = null, lastFocus = null;
+  function flipFrom(srcEl){
+    var r = srcEl.getBoundingClientRect(), pr = plate.getBoundingClientRect();
+    var shotH = shotEl.getBoundingClientRect().height;
+    var s = Math.max(.04, r.width / (pr.width || 1));
+    var dx = (r.left + r.width / 2) - (pr.left + pr.width / 2);
+    var dy = (r.top + r.height / 2) - (pr.top + (shotH * s) / 2);
+    return "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px) scale(" + s.toFixed(4) + ")";
+  }
+  function fillShot(i){
+    var s = SHOTS[i];
+    if (shotFace) shotEl.removeChild(shotFace.el);
+    shotFace = makeFace(i);
+    if (textures[i]) shotFace.img.src = textures[i];
+    if (s.tall) shotFace.img.style.objectPosition = "50% 30%";
+    shotEl.insertBefore(shotFace.el, shotEl.firstChild);
+    $("litTitle").textContent = s.title;
+    $("litWhere").textContent = pad2(s.ch + 1) + " · " + CH[s.ch].name;
+    $("litNote").textContent = s.note;
+  }
+  function openShot(i, srcEl){
+    if (body.classList.contains("lit")) return;
+    clearTimeout(closeTimer);
+    lastFocus = document.activeElement;
+    litIdx = i; focused = i;
+    fillShot(i);
+    root.style.overflow = "hidden";
+    lit.scrollTop = 0;
+    body.classList.add("lit");
+    lit.setAttribute("aria-hidden", "false");
+    plate.style.transition = "none"; plate.style.transform = "none";
+    plate.style.transform = flipFrom(srcEl); plate.style.opacity = "0";
+    void plate.offsetWidth;
+    plate.style.transition = ""; plate.style.transform = ""; plate.style.opacity = "";
+    setTimeout(function(){ try { lit.querySelector(".close").focus({ preventScroll:true }); } catch(_){} }, 60);
+  }
+  function step(dir){
+    var i = (litIdx + dir + N) % N;
+    litIdx = i;
+    if (!body.classList.contains("gridview")) focused = i;
+    fillShot(i);
+  }
+  function closeShot(){
+    if (!body.classList.contains("lit")) return;
+    var i = litIdx;
+    focused = -1;
+    body.classList.remove("lit");
+    lit.setAttribute("aria-hidden", "true");
+    var src = body.classList.contains("gridview") ? gridFigs[i].el : cards[i].el;
+    var prev = plate.style.transform;
+    plate.style.transition = "none"; plate.style.transform = "none";
+    var t = flipFrom(src);
+    plate.style.transform = prev; void plate.offsetWidth;
+    plate.style.transition = ""; plate.style.transform = t; plate.style.opacity = "0";
+    if (!body.classList.contains("menuopen")) root.style.overflow = "";
+    closeTimer = setTimeout(function(){
+      plate.style.transition = "none"; plate.style.transform = ""; plate.style.opacity = "";
+      void plate.offsetWidth; plate.style.transition = "";
+    }, 640);
+    if (lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll:true }); } catch(_){}
+  }
+  lit.addEventListener("click", function(e){ if (e.target.closest && e.target.closest("[data-close]")) closeShot(); });
+  $("litPrev").addEventListener("click", function(){ step(-1); });
+  $("litNext").addEventListener("click", function(){ step(1); });
+
+  /* ------------------------------------------------------------
+     GRID + MENU
+  ------------------------------------------------------------ */
+  function setGrid(on){ body.classList.toggle("gridview", on); if (on){ velX = velY = 0; dragging = false; aim = null; } }
+  gridBtn.addEventListener("click", function(){ setGrid(!body.classList.contains("gridview")); });
+  function setMenu(open){
+    body.classList.toggle("menuopen", open);
+    menuBtn.setAttribute("aria-expanded", String(open));
+    menuBtn.setAttribute("aria-label", open ? "إغلاق القائمة" : "فتح القائمة");
+    $("menu").setAttribute("aria-hidden", String(!open));
+  }
+  menuBtn.addEventListener("click", function(){ setMenu(!body.classList.contains("menuopen")); });
+  [].forEach.call(nav.querySelectorAll("a"), function(a){
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      setMenu(false);
+      if (a.hasAttribute("data-grid")){ setGrid(true); $("grid").scrollTop = 0; return; }
+      if (a.hasAttribute("data-spec")){ setTimeout(openSpec, 350); return; }
+      var k = +a.dataset.ch;
+      setTimeout(function(){ goChapter(k, !body.classList.contains("gridview")); }, 450);
+    });
+  });
+  document.querySelector(".wordmark").addEventListener("click", function(e){
+    e.preventDefault(); closeShot(); setMenu(false); setGrid(false); window.scrollTo(0, 0);
+    face(0, null);
+  });
+
+  addEventListener("keydown", function(e){
+    if (e.key === "Escape"){
+      if (body.classList.contains("specimen")) closeSpec();
+      else if (body.classList.contains("lit")) closeShot();
+      else if (body.classList.contains("menuopen")) setMenu(false);
+      else if (body.classList.contains("gridview")) setGrid(false);
+      return;
+    }
+    if (body.classList.contains("lit")){
+      if (e.key === "ArrowLeft") step(1); else if (e.key === "ArrowRight") step(-1);
+      return;
+    }
+    if (!revealed || spOn || body.classList.contains("menuopen") || body.classList.contains("gridview")) return;
+    if (e.target.closest && e.target.closest("input,textarea")) return;
+    if (e.key === "ArrowLeft"){ aim = null; velX = -2.2; }
+    else if (e.key === "ArrowRight"){ aim = null; velX = 2.2; }
+    else if (e.key === "ArrowUp"){ aim = null; velY = 1.6; }
+    else if (e.key === "ArrowDown"){ aim = null; velY = -1.6; }
+  });
+
+  /* ------------------------------------------------------------
+     3D ORE VIEWER
+  ------------------------------------------------------------ */
+  var spEl = $("specimen"), spStage = $("spStage"), spOn = false, spLast = 0, spPtrs = {}, spPinch = 0, spDrag = false;
+  function spLoop(now){
+    if (!spOn) return;
+    var dt = Math.min(.05, (now - spLast) / 1000); spLast = now;
+    ORE.frame(RM ? 0 : dt, spDrag);
+    requestAnimationFrame(spLoop);
+  }
+  function openSpec(){
+    if (!ORE || spOn || !revealed) return;
+    closeShot(); setMenu(false);
+    spOn = true; body.classList.add("specimen"); spEl.setAttribute("aria-hidden", "false");
+    root.style.overflow = "hidden";
+    spLast = performance.now(); requestAnimationFrame(spLoop);
+    setTimeout(function(){ try { $("spClose").focus({ preventScroll:true }); } catch(_){} }, 60);
+  }
+  function closeSpec(){
+    if (!spOn) return;
+    body.classList.remove("specimen"); spEl.setAttribute("aria-hidden", "true");
+    root.style.overflow = "";
+    setTimeout(function(){ if (!body.classList.contains("specimen")) spOn = false; }, 520);
+  }
+  [].forEach.call(document.querySelectorAll("[data-spec]"), function(b){
+    if (b.tagName === "BUTTON") b.addEventListener("click", openSpec);
+  });
+  $("spClose").addEventListener("click", closeSpec);
+  function pinchDist(){ var k = Object.keys(spPtrs); if (k.length < 2) return 0; var a = spPtrs[k[0]], b = spPtrs[k[1]]; return Math.hypot(a.x - b.x, a.y - b.y); }
+  spStage.addEventListener("pointerdown", function(e){
+    spPtrs[e.pointerId] = { x:e.clientX, y:e.clientY };
+    try { spStage.setPointerCapture(e.pointerId); } catch(_){}
+    spDrag = true; spStage.classList.add("drag");
+    spPinch = pinchDist();
+  });
+  spStage.addEventListener("pointermove", function(e){
+    var p = spPtrs[e.pointerId]; if (!p || !ORE) return;
+    var dx = e.clientX - p.x, dy = e.clientY - p.y;
+    p.x = e.clientX; p.y = e.clientY;
+    if (Object.keys(spPtrs).length > 1){
+      var d = pinchDist(); if (spPinch && d) ORE.zoom(spPinch / d); spPinch = d;
+    } else ORE.drag(dx, dy);
+  });
+  function spUp(e){
+    delete spPtrs[e.pointerId];
+    spPinch = pinchDist();
+    if (!Object.keys(spPtrs).length){ spDrag = false; spStage.classList.remove("drag"); }
+  }
+  spStage.addEventListener("pointerup", spUp);
+  spStage.addEventListener("pointercancel", spUp);
+  spStage.addEventListener("wheel", function(e){ if (!ORE) return; e.preventDefault(); ORE.zoom(e.deltaY > 0 ? 1.07 : 1 / 1.07); }, { passive:false });
+
+  /* ------------------------------------------------------------
+     CURSOR
+  ------------------------------------------------------------ */
+  var dot = $("dot");
+  if (matchMedia("(hover:hover) and (pointer:fine)").matches){
+    var tx = innerWidth / 2, ty = innerHeight / 2, cx = tx, cy = ty, seen = false;
+    addEventListener("pointermove", function(e){
+      if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
+      tx = e.clientX; ty = e.clientY;
+      if (!seen){ seen = true; cx = tx; cy = ty; dot.classList.add("on"); }
+    }, { passive:true });
+    document.addEventListener("mouseleave", function(){ dot.classList.remove("on"); seen = false; });
+    document.addEventListener("mouseover", function(e){
+      dot.classList.toggle("wide", !!(e.target.closest && e.target.closest(".card, a, button, #grid figure")));
+    });
+    (function follow(){
+      cx += (tx - cx) * .2; cy += (ty - cy) * .2;
+      dot.style.transform = "translate3d(" + cx.toFixed(2) + "px," + cy.toFixed(2) + "px,0)";
+      requestAnimationFrame(follow);
+    })();
+  } else { dot.style.display = "none"; }
+})();
+</script>
+</body></html>
